@@ -248,11 +248,22 @@ func TestScalarMultWithNegative(t *testing.T) {
 	}
 }
 
-func TestScalarMultWithNonInteger(t *testing.T) {
+func TestScalarMultWithNonIntegerSlice(t *testing.T) {
 	vec := []int{1, 2, 3, 4}
 	scalar := .5
 
 	want := []float64{.5, 1., 1.5, 2.}
+	res, err := vectors.ScalarMult(vec, scalar)
+	if err != nil || !reflect.DeepEqual(res, want) {
+		t.Fatalf(`ScalarMult([3], -2) = {%f}, want {%f}`, res, want)
+	}
+}
+
+func TestScalarMultWithNonIntegerScalar(t *testing.T) {
+	vec := []float64{.5, 2., 3., 4.}
+	scalar := 2
+
+	want := []float64{1, 4, 6, 8}
 	res, err := vectors.ScalarMult(vec, scalar)
 	if err != nil || !reflect.DeepEqual(res, want) {
 		t.Fatalf(`ScalarMult([3], -2) = {%f}, want {%f}`, res, want)

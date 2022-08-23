@@ -42,7 +42,7 @@ func Add[T int | float64, E int | float64](first []T, second []E) ([]float64, er
 // Multiplies a given vector by a scalar value.
 //
 // A successful ScalarMult() call will return err == nil.
-func ScalarMult[T int | float64](vec []T, scalar float64) ([]float64, error) {
+func ScalarMult[T int | float64, E int | float64](vec []T, scalar E) ([]float64, error) {
 	if len(vec) < 1 {
 		return nil, errors.New("vector cannot be empty")
 	}
@@ -53,7 +53,7 @@ func ScalarMult[T int | float64](vec []T, scalar float64) ([]float64, error) {
 	}
 
 	for i := 0; i < len(vec); i++ {
-		res[i] = float64(vec[i]) * scalar
+		res[i] = float64(vec[i]) * float64(scalar)
 	}
 
 	return res, nil
