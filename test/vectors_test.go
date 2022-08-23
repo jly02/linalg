@@ -1,3 +1,6 @@
+// Package test ensures that all linalg modules are working
+// as intended.
+// TODO: Add tests for non-integer values for Dot() and Add()
 package test
 
 import (
@@ -36,7 +39,7 @@ func TestDotWithOne(t *testing.T) {
 	want := 50.
 	dot, err := vectors.Dot(first, second)
 	if err != nil || dot != want {
-		t.Fatalf(`Dot([1], [1]) = %f, %v, want 0`, dot, err)
+		t.Fatalf(`Dot([1], [1]) = %f, %v, want %f`, dot, err, want)
 	}
 }
 
@@ -47,7 +50,7 @@ func TestDotWithFew(t *testing.T) {
 	want := 32.
 	dot, err := vectors.Dot(first, second)
 	if err != nil || dot != want {
-		t.Fatalf(`Dot([3], [3]) = %f, %v, want 0`, dot, err)
+		t.Fatalf(`Dot([3], [3]) = %f, %v, want %f`, dot, err, want)
 	}
 }
 
@@ -58,7 +61,7 @@ func TestDotWithMany(t *testing.T) {
 	want := 28910.
 	dot, err := vectors.Dot(first, second)
 	if err != nil || dot != want {
-		t.Fatalf(`Dot([20], [20]) = %f, %v, want 0`, dot, err)
+		t.Fatalf(`Dot([20], [20]) = %f, %v, want %f`, dot, err, want)
 	}
 }
 
@@ -69,17 +72,39 @@ func TestDotWithNegative(t *testing.T) {
 	want := 11.
 	dot, err := vectors.Dot(first, second)
 	if err != nil || dot != want {
-		t.Fatalf(`Dot([3], [3]) = %f, %v, want 0`, dot, err)
+		t.Fatalf(`Dot([3], [3]) = %f, %v, want %f`, dot, err, want)
 	}
 }
 
 func TestDotWithDifferentLengths(t *testing.T) {
-	first := make([]int, 5)
+	first := make([]float64, 5)
 	second := make([]int, 4)
 
 	dot, err := vectors.Dot(first, second)
 	if err == nil {
 		t.Fatalf(`Dot([5], [4]) = %f, did not return error as expected`, dot)
+	}
+}
+
+func TestDotWithOneNonInteger(t *testing.T) {
+	first := []float64{.5, 2.5, 1.5}
+	second := []int{1, 2, 4}
+
+	want := 11.5
+	dot, err := vectors.Dot(first, second)
+	if err != nil || dot != want {
+		t.Fatalf(`Dot([3], [3]) = %f, %v, want %f`, dot, err, want)
+	}
+}
+
+func TestDotWithBothNonInteger(t *testing.T) {
+	first := []float64{.5, 2.5, 1.5}
+	second := []float64{1., 2., 4.}
+
+	want := 11.5
+	dot, err := vectors.Dot(first, second)
+	if err != nil || dot != want {
+		t.Fatalf(`Dot([3], [3]) = %f, %v, want %f`, dot, err, want)
 	}
 }
 
@@ -144,6 +169,28 @@ func TestAddWithDifferentLengths(t *testing.T) {
 	vec, err := vectors.Add(first, second)
 	if err == nil {
 		t.Fatalf(`Add([5], [4]) = %f, did not return error as expected`, vec)
+	}
+}
+
+func TestAddWithOneNonInteger(t *testing.T) {
+	first := []float64{.5, 2.5, 1.5}
+	second := []int{1, 2, 4}
+
+	want := []float64{1.5, 4.5, 5.5}
+	vec, err := vectors.Add(first, second)
+	if err != nil || !reflect.DeepEqual(vec, want) {
+		t.Fatalf(`Add([3], [3]) = {%f}, want {%f}`, vec, want)
+	}
+}
+
+func TestAddWithBothNonInteger(t *testing.T) {
+	first := []float64{.5, 2.5, 1.5}
+	second := []float64{1., 2., 4.}
+
+	want := []float64{1.5, 4.5, 5.5}
+	vec, err := vectors.Add(first, second)
+	if err != nil || !reflect.DeepEqual(vec, want) {
+		t.Fatalf(`Add([3], [3]) = {%f}, want {%f}`, vec, want)
 	}
 }
 

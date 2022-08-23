@@ -8,7 +8,7 @@ import "errors"
 // Computes the dot product of two vectors.
 //
 // A successful Dot() call will return err == nil.
-func Dot[T int | float64 | float32](first []T, second []T) (float64, error) {
+func Dot[T int | float64, E int | float64](first []T, second []E) (float64, error) {
 	// Check if lengths are equal
 	if len(first) != len(second) {
 		return 0, errors.New("length of each vector must be equal")
@@ -25,7 +25,7 @@ func Dot[T int | float64 | float32](first []T, second []T) (float64, error) {
 // Adds two vectors, returning the resulting vector.
 //
 // A successful Add() call will return err == nil.
-func Add[T int | float64 | float32](first []T, second []T) ([]float64, error) {
+func Add[T int | float64, E int | float64](first []T, second []E) ([]float64, error) {
 	// Check if lengths are equal
 	if len(first) != len(second) {
 		return nil, errors.New("length of each vector must be equal")
@@ -42,7 +42,7 @@ func Add[T int | float64 | float32](first []T, second []T) ([]float64, error) {
 // Multiplies a given vector by a scalar value.
 //
 // A successful ScalarMult() call will return err == nil.
-func ScalarMult[T int | float64 | float32](vec []T, scalar float64) ([]float64, error) {
+func ScalarMult[T int | float64](vec []T, scalar float64) ([]float64, error) {
 	if len(vec) < 1 {
 		return nil, errors.New("vector cannot be empty")
 	}
