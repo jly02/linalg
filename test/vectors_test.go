@@ -3,11 +3,32 @@
 package test
 
 import (
-	"reflect"
 	"testing"
 
 	vectors "github.com/jly02/linalg/pkg"
 )
+
+var EPSILON float64 = 0.00000001
+
+// Compares equality between two floats based on arbitrary epsilon value.
+func floatEquals(a, b float64) bool {
+	if (a-b) < EPSILON && (b-a) < EPSILON {
+		return true
+	}
+
+	return false
+}
+
+// Compare equality between two float arrays based on arbitrary epsilon value.
+func floatSliceEquals(a, b []float64) bool {
+	for i := 0; i < len(a); i++ {
+		if !floatEquals(a[i], b[i]) {
+			return false
+		}
+	}
+
+	return true
+}
 
 func TestDotWithNil(t *testing.T) {
 	var first []int = nil
@@ -15,7 +36,7 @@ func TestDotWithNil(t *testing.T) {
 
 	want := 0.
 	dot, err := vectors.Dot(first, second)
-	if err != nil || dot != want {
+	if err != nil || !floatEquals(dot, want) {
 		t.Fatalf(`Dot([], []) = %f, %v, want 0`, dot, err)
 	}
 }
@@ -26,7 +47,7 @@ func TestDotWithEmpty(t *testing.T) {
 
 	want := 0.
 	dot, err := vectors.Dot(first, second)
-	if err != nil || dot != want {
+	if err != nil || !floatEquals(dot, want) {
 		t.Fatalf(`Dot([0], [0]) = %f, %v, want 0`, dot, err)
 	}
 }
@@ -37,7 +58,7 @@ func TestDotWithOne(t *testing.T) {
 
 	want := 50.
 	dot, err := vectors.Dot(first, second)
-	if err != nil || dot != want {
+	if err != nil || !floatEquals(dot, want) {
 		t.Fatalf(`Dot([1], [1]) = %f, %v, want %f`, dot, err, want)
 	}
 }
@@ -48,7 +69,7 @@ func TestDotWithFew(t *testing.T) {
 
 	want := 32.
 	dot, err := vectors.Dot(first, second)
-	if err != nil || dot != want {
+	if err != nil || !floatEquals(dot, want) {
 		t.Fatalf(`Dot([3], [3]) = %f, %v, want %f`, dot, err, want)
 	}
 }
@@ -59,7 +80,7 @@ func TestDotWithMany(t *testing.T) {
 
 	want := 28910.
 	dot, err := vectors.Dot(first, second)
-	if err != nil || dot != want {
+	if err != nil || !floatEquals(dot, want) {
 		t.Fatalf(`Dot([20], [20]) = %f, %v, want %f`, dot, err, want)
 	}
 }
@@ -70,7 +91,7 @@ func TestDotWithNegative(t *testing.T) {
 
 	want := 11.
 	dot, err := vectors.Dot(first, second)
-	if err != nil || dot != want {
+	if err != nil || !floatEquals(dot, want) {
 		t.Fatalf(`Dot([3], [3]) = %f, %v, want %f`, dot, err, want)
 	}
 }
@@ -91,7 +112,7 @@ func TestDotWithOneNonInteger(t *testing.T) {
 
 	want := 11.5
 	dot, err := vectors.Dot(first, second)
-	if err != nil || dot != want {
+	if err != nil || !floatEquals(dot, want) {
 		t.Fatalf(`Dot([3], [3]) = %f, %v, want %f`, dot, err, want)
 	}
 }
@@ -102,8 +123,83 @@ func TestDotWithBothNonInteger(t *testing.T) {
 
 	want := 11.5
 	dot, err := vectors.Dot(first, second)
-	if err != nil || dot != want {
+	if err != nil || !floatEquals(dot, want) {
 		t.Fatalf(`Dot([3], [3]) = %f, %v, want %f`, dot, err, want)
+	}
+}
+
+func TestCrossWithNil(t *testing.T) {
+	var first []int = nil
+	var second []int = nil
+
+	vec, err := vectors.Cross(first, second)
+	if err == nil {
+		t.Fatalf(`Cross(nil, nil) = %f didn't return error as expected`, vec)
+	}
+}
+
+func TestCrossWithZero(t *testing.T) {
+	first := []int{0, 0, 0}
+	second := []int{0, 0, 0}
+
+	want := []float64{0, 0, 0}
+	vec, err := vectors.Cross(first, second)
+	if err != nil || !floatSliceEquals(vec, want) {
+		t.Fatalf(`Cross([3], [3]) = %f, want %f`, vec, want)
+	}
+}
+
+func TestCrossWithSmallValues(t *testing.T) {
+	first := []int{1, 2, 3}
+	second := []int{4, 5, 6}
+
+	want := []float64{-3, 6, -3}
+	vec, err := vectors.Cross(first, second)
+	if err != nil || !floatSliceEquals(vec, want) {
+		t.Fatalf(`Cross([3], [3]) = %f, want %f`, vec, want)
+	}
+}
+
+func TestCrossWithNegative(t *testing.T) {
+	first := []int{-1, 2, 3}
+	second := []int{4, 5, -6}
+
+	want := []float64{-27, 6, -13}
+	vec, err := vectors.Cross(first, second)
+	if err != nil || !floatSliceEquals(vec, want) {
+		t.Fatalf(`Cross([3], [3]) = %f, want %f`, vec, want)
+	}
+}
+
+func TestCrossWithOneNonInteger(t *testing.T) {
+	first := []float64{1.5, 2.5, 3.5}
+	second := []int{4, 5, 6}
+
+	want := []float64{-2.5, 5, -2.5}
+	vec, err := vectors.Cross(first, second)
+	if err != nil || !floatSliceEquals(vec, want) {
+		t.Fatalf(`Cross([3], [3]) = %f, want %f`, vec, want)
+	}
+}
+
+func TestCrossWithBothNonInteger(t *testing.T) {
+	first := []float64{1.5, 2.5, 3.5}
+	second := []float64{4.25, 5.65, 6.6}
+
+	want := []float64{-3.275, 4.975, -2.15}
+	vec, err := vectors.Cross(first, second)
+	if err != nil || !floatSliceEquals(vec, want) {
+		t.Fatalf(`Cross([3], [3]) = %f, want %f`, vec, want)
+	}
+}
+
+func TestCrossWithWrongLength(t *testing.T) {
+	first := []float64{1.5, 2.5, 3.5, 4.5}
+	second := []float64{4.25, 5.65, 6.6}
+
+	vec, err := vectors.Cross(first, second)
+	if err == nil {
+		t.Fatalf(`Cross([4], [3]) = %f didn't return error as expected`, vec)
 	}
 }
 
@@ -123,7 +219,7 @@ func TestAddWithOne(t *testing.T) {
 
 	want := []float64{3}
 	vec, err := vectors.Add(first, second)
-	if err != nil || !reflect.DeepEqual(want, vec) {
+	if err != nil || !floatSliceEquals(vec, want) {
 		t.Fatalf(`Add([1], [1]) = {%f}, want {%f}`, vec[0], want)
 	}
 }
@@ -134,7 +230,7 @@ func TestAddWithFew(t *testing.T) {
 
 	want := []float64{5, 7, 9}
 	vec, err := vectors.Add(first, second)
-	if err != nil || !reflect.DeepEqual(vec, want) {
+	if err != nil || !floatSliceEquals(vec, want) {
 		t.Fatalf(`Add([3], [3]) = {%f}, want {%f}`, vec, want)
 	}
 }
@@ -145,7 +241,7 @@ func TestAddWithMany(t *testing.T) {
 
 	want := []float64{22, 22, 22, 22, 22, 22, 22, 22, 22, 22}
 	vec, err := vectors.Add(first, second)
-	if err != nil || !reflect.DeepEqual(vec, want) {
+	if err != nil || !floatSliceEquals(vec, want) {
 		t.Fatalf(`Add([10], [10]) = {%f}, want {%f}`, vec, want)
 	}
 }
@@ -156,7 +252,7 @@ func TestAddWithNegative(t *testing.T) {
 
 	want := []float64{2, 0, -4}
 	vec, err := vectors.Add(first, second)
-	if err != nil || !reflect.DeepEqual(vec, want) {
+	if err != nil || !floatSliceEquals(vec, want) {
 		t.Fatalf(`Add([3], [3]) = {%f}, want {%f}`, vec, want)
 	}
 }
@@ -177,7 +273,7 @@ func TestAddWithOneNonInteger(t *testing.T) {
 
 	want := []float64{1.5, 4.5, 5.5}
 	vec, err := vectors.Add(first, second)
-	if err != nil || !reflect.DeepEqual(vec, want) {
+	if err != nil || !floatSliceEquals(vec, want) {
 		t.Fatalf(`Add([3], [3]) = {%f}, want {%f}`, vec, want)
 	}
 }
@@ -188,7 +284,7 @@ func TestAddWithBothNonInteger(t *testing.T) {
 
 	want := []float64{1.5, 4.5, 5.5}
 	vec, err := vectors.Add(first, second)
-	if err != nil || !reflect.DeepEqual(vec, want) {
+	if err != nil || !floatSliceEquals(vec, want) {
 		t.Fatalf(`Add([3], [3]) = {%f}, want {%f}`, vec, want)
 	}
 }
@@ -209,7 +305,7 @@ func TestScalarMultWithZeroScalar(t *testing.T) {
 
 	want := []float64{0., 0., 0.}
 	res, err := vectors.ScalarMult(vec, scalar)
-	if err != nil || !reflect.DeepEqual(res, want) {
+	if err != nil || !floatSliceEquals(res, want) {
 		t.Fatalf(`ScalarMult([3], 0) = {%f}, want {%f}`, res, want)
 	}
 }
@@ -220,7 +316,7 @@ func TestScalarMultWithOne(t *testing.T) {
 
 	want := []float64{3.}
 	res, err := vectors.ScalarMult(vec, scalar)
-	if err != nil || !reflect.DeepEqual(res, want) {
+	if err != nil || !floatSliceEquals(res, want) {
 		t.Fatalf(`ScalarMult([1], 3) = {%f}, want {%f}`, res, want)
 	}
 }
@@ -231,7 +327,7 @@ func TestScalarMultWithMany(t *testing.T) {
 
 	want := []float64{3., 6., 9., 12., 15., 18., 21., 24., 27., 30.}
 	res, err := vectors.ScalarMult(vec, scalar)
-	if err != nil || !reflect.DeepEqual(res, want) {
+	if err != nil || !floatSliceEquals(res, want) {
 		t.Fatalf(`ScalarMult([10], 3) = {%f}, want {%f}`, res, want)
 	}
 }
@@ -242,7 +338,7 @@ func TestScalarMultWithNegative(t *testing.T) {
 
 	want := []float64{-2, -6, 8}
 	res, err := vectors.ScalarMult(vec, scalar)
-	if err != nil || !reflect.DeepEqual(res, want) {
+	if err != nil || !floatSliceEquals(res, want) {
 		t.Fatalf(`ScalarMult([3], -2) = {%f}, want {%f}`, res, want)
 	}
 }
@@ -253,7 +349,7 @@ func TestScalarMultWithNonIntegerSlice(t *testing.T) {
 
 	want := []float64{.5, 1., 1.5, 2.}
 	res, err := vectors.ScalarMult(vec, scalar)
-	if err != nil || !reflect.DeepEqual(res, want) {
+	if err != nil || !floatSliceEquals(res, want) {
 		t.Fatalf(`ScalarMult([4], .5) = {%f}, want {%f}`, res, want)
 	}
 }
@@ -264,7 +360,7 @@ func TestScalarMultWithNonIntegerScalar(t *testing.T) {
 
 	want := []float64{1, 4, 6, 8}
 	res, err := vectors.ScalarMult(vec, scalar)
-	if err != nil || !reflect.DeepEqual(res, want) {
+	if err != nil || !floatSliceEquals(res, want) {
 		t.Fatalf(`ScalarMult([4], 2) = {%f}, want {%f}`, res, want)
 	}
 }
