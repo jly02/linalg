@@ -1,4 +1,4 @@
-// The test package ensures that all linalg modules are working
+// The test package ensures that all vectors functions are working
 // as intended.
 package test
 
@@ -21,7 +21,7 @@ func floatEquals(a, b float64) bool {
 
 // Compare equality between two float arrays based on arbitrary epsilon value.
 func floatSliceEquals(a, b []float64) bool {
-	for i := 0; i < len(a); i++ {
+	for i := range a {
 		if !floatEquals(a[i], b[i]) {
 			return false
 		}

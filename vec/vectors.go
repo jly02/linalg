@@ -1,6 +1,6 @@
-// The linalg package provides utility methods for performing standard
-// linear-algebraic operations on vectors and matrices. All numeric results
-// are returned as 64-bit floats, or vectors of them, and all successful
+// The vectors package provides utility methods for performing standard
+// linear-algebraic operations on vectors. All numeric results are
+// returned as 64-bit floats, or vectors of them, and all successful
 // function calls will return err == nil.
 package linalg
 
@@ -20,7 +20,7 @@ func Dot[T int | float64, E int | float64](a []T, b []E) (float64, error) {
 	}
 
 	var dot float64 = 0
-	for i := 0; i < len(a); i++ {
+	for i := range a {
 		dot += float64(a[i]) * float64(b[i])
 	}
 
@@ -62,7 +62,7 @@ func Add[T int | float64, E int | float64](a []T, b []E) ([]float64, error) {
 	}
 
 	res := make([]float64, len(a))
-	for i := 0; i < len(a); i++ {
+	for i := range a {
 		res[i] = float64(a[i]) + float64(b[i])
 	}
 
@@ -80,7 +80,7 @@ func ScalarMult[T int | float64, E int | float64](vec []T, scalar E) ([]float64,
 		return res, nil
 	}
 
-	for i := 0; i < len(vec); i++ {
+	for i := range vec {
 		res[i] = float64(vec[i]) * float64(scalar)
 	}
 

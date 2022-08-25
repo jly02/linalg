@@ -1,3 +1,7 @@
+// The matrices package provides utility methods for generating matrices and
+// performing standard linear-algebraic operations on them. All numeric results
+// are returned as 64-bit floats, or  matrices of them, and all successful
+// function calls will return err == nil.
 package linalg
 
 import "errors"
