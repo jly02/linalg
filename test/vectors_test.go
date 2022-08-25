@@ -5,7 +5,7 @@ package test
 import (
 	"testing"
 
-	vectors "github.com/jly02/linalg/pkg"
+	vectors "github.com/jly02/linalg/vec"
 )
 
 const EPSILON float64 = 0.00000001
