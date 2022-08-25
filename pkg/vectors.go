@@ -1,6 +1,7 @@
-// The vectors package provides utility methods
-// for performing standard linear-algebraic
+// The vectors package provides utility methods for performing standard linear-algebraic
 // operations on vectors.
+//
+// All numeric results are returned at 64-bit floats, or vectors of them.
 package vectors
 
 import "errors"
