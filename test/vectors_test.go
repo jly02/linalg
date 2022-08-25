@@ -1,4 +1,4 @@
-// Package test ensures that all linalg modules are working
+// The test package ensures that all linalg modules are working
 // as intended.
 package test
 

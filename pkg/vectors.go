@@ -9,6 +9,7 @@ import (
 	"math"
 )
 
+// Arbitrary maximum permissible error in floating point calculations.
 const EPSILON float64 = 0.00000001
 
 // Computes the dot product of two vectors.
