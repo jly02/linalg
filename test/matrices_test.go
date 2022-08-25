@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	matrices "github.com/jly02/linalg/mat"
+	matrices "github.com/jly02/linalg/pkg/mat"
 )
 
 // Compares equality between two float matrices based on arbitrary epsilon value.
