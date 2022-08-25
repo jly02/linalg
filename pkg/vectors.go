@@ -1,6 +1,7 @@
 // The vectors package provides utility methods for performing standard
 // linear-algebraic operations on vectors. All numeric results are returned
-// as 64-bit floats, or vectors of them.
+// as 64-bit floats, or vectors of them, and all successful function calls
+// will return err == nil.
 package vectors
 
 import (
@@ -11,8 +12,6 @@ import (
 const EPSILON float64 = 0.00000001
 
 // Computes the dot product of two vectors.
-//
-// A successful Dot() call will return err == nil.
 func Dot[T int | float64, E int | float64](a []T, b []E) (float64, error) {
 	// Check if lengths are equal
 	if len(a) != len(b) {
@@ -29,8 +28,6 @@ func Dot[T int | float64, E int | float64](a []T, b []E) (float64, error) {
 
 // Determines whether two vectors are orthogonal, I.E. their dot product is zero,
 // with an error within EPSILON.
-//
-// A successful isOrthogonal() call will return err == nil.
 func IsOrthogonal[T int | float64, E int | float64](a []T, b []E) (bool, error) {
 	if a == nil || b == nil {
 		return false, errors.New("vectors cannot be nil")
@@ -42,8 +39,6 @@ func IsOrthogonal[T int | float64, E int | float64](a []T, b []E) (bool, error) 
 
 // Computes the cross product of two vectors. A cross product is exclusive to 3-dimensional
 // vectors.
-//
-// A successful Cross() call will return err == nil.
 func Cross[T int | float64, E int | float64](a []T, b []E) ([]float64, error) {
 	// Both vectors must be 3D
 	if len(a) != 3 || len(b) != 3 {
@@ -59,8 +54,6 @@ func Cross[T int | float64, E int | float64](a []T, b []E) ([]float64, error) {
 }
 
 // Adds two vectors, returning the resulting vector.
-//
-// A successful Add() call will return err == nil.
 func Add[T int | float64, E int | float64](a []T, b []E) ([]float64, error) {
 	// Check if lengths are equal
 	if len(a) != len(b) {
@@ -76,8 +69,6 @@ func Add[T int | float64, E int | float64](a []T, b []E) ([]float64, error) {
 }
 
 // Multiplies a given vector by a scalar value.
-//
-// A successful ScalarMult() call will return err == nil.
 func ScalarMult[T int | float64, E int | float64](vec []T, scalar E) ([]float64, error) {
 	if len(vec) < 1 {
 		return nil, errors.New("vector cannot be empty")
