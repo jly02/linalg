@@ -4,7 +4,12 @@
 // All numeric results are returned at 64-bit floats, or vectors of them.
 package vectors
 
-import "errors"
+import (
+	"errors"
+	"math"
+)
+
+const EPSILON float64 = 0.00000001
 
 // Computes the dot product of two vectors.
 //
@@ -21,6 +26,19 @@ func Dot[T int | float64, E int | float64](a []T, b []E) (float64, error) {
 	}
 
 	return dot, nil
+}
+
+// Determines whether two vectors are orthogonal, I.E. their dot product is zero,
+// with an error within EPSILON.
+//
+// A successful isOrthogonal() call will return err == nil.
+func IsOrthogonal[T int | float64, E int | float64](a []T, b []E) (bool, error) {
+	if a == nil || b == nil {
+		return false, errors.New("vectors cannot be nil")
+	}
+
+	dot, err := Dot(a, b)
+	return math.Abs(dot-0) < EPSILON, err
 }
 
 // Computes the cross product of two vectors. A cross product is exclusive to 3-dimensional

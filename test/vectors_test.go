@@ -8,7 +8,7 @@ import (
 	vectors "github.com/jly02/linalg/pkg"
 )
 
-var EPSILON float64 = 0.00000001
+const EPSILON float64 = 0.00000001
 
 // Compares equality between two floats based on arbitrary epsilon value.
 func floatEquals(a, b float64) bool {
@@ -125,6 +125,38 @@ func TestDotWithBothNonInteger(t *testing.T) {
 	dot, err := vectors.Dot(first, second)
 	if err != nil || !floatEquals(dot, want) {
 		t.Fatalf(`Dot([3], [3]) = %f, %v, want %f`, dot, err, want)
+	}
+}
+
+func TestIsOrthogonalOne(t *testing.T) {
+	var first []int = nil
+	var second []int = nil
+
+	perp, err := vectors.IsOrthogonal(first, second)
+	if err == nil {
+		t.Fatalf(`IsOrthogonal(nil, nil) = %t, did not return error as expected`, perp)
+	}
+}
+
+func TestIsOrthogonalFalse(t *testing.T) {
+	first := []int{5}
+	second := []int{10}
+
+	want := false
+	perp, err := vectors.IsOrthogonal(first, second)
+	if err != nil || perp != want {
+		t.Fatalf(`Dot(nil, nil) = %t, want %t, %s`, perp, want, err)
+	}
+}
+
+func TestIsOrthogonalTrue(t *testing.T) {
+	first := []int{15, -5, -5}
+	second := []float64{5, 10, 5}
+
+	want := true
+	perp, err := vectors.IsOrthogonal(first, second)
+	if err != nil || perp != want {
+		t.Fatalf(`Dot(nil, nil) = %t, want %t, %s`, perp, want, err)
 	}
 }
 
