@@ -18,7 +18,7 @@ func floatMatrixEquals(a, b [][]float64) bool {
 }
 
 func TestEyeLessThanOne(t *testing.T) {
-	mat, err := matrices.Eye(0)
+	mat, err := matrices.IdMatrix(0)
 
 	if err == nil {
 		t.Fatalf(`Eye(0) = %f, %v, want 0`, mat, err)
@@ -26,7 +26,7 @@ func TestEyeLessThanOne(t *testing.T) {
 }
 
 func TestEyeOne(t *testing.T) {
-	mat, err := matrices.Eye(1)
+	mat, err := matrices.IdMatrix(1)
 
 	want := [][]float64{{1}}
 	if err != nil || !floatMatrixEquals(mat, want) {
