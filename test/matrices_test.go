@@ -33,3 +33,17 @@ func TestEyeOne(t *testing.T) {
 		t.Fatalf(`Eye(0) = %f, %v, want %f`, mat, err, want)
 	}
 }
+
+func TestEyeSmall(t *testing.T) {
+	mat, err := matrices.IdMatrix(4)
+
+	want := [][]float64{
+		{1, 0, 0, 0},
+		{0, 1, 0, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0, 1},
+	}
+	if err != nil || !floatMatrixEquals(mat, want) {
+		t.Fatalf(`Eye(4) = %f, %v, want %f`, mat, err, want)
+	}
+}
