@@ -1,4 +1,4 @@
-// The vectors package provides utility methods for performing standard
+// Package linalg vectors module provides utility methods for performing standard
 // linear-algebraic operations on vectors. All numeric results are
 // returned as 64-bit floats, or vectors of them, and all successful
 // function calls will return err == nil.
@@ -9,10 +9,10 @@ import (
 	"math"
 )
 
-// Arbitrary maximum permissible error in floating point calculations.
+// EPSILON Arbitrary maximum permissible error in floating point calculations.
 const EPSILON float64 = 0.00000001
 
-// Computes the dot product of two vectors.
+// Dot Computes the dot product of two vectors.
 func Dot[T int | float64, E int | float64](a []T, b []E) (float64, error) {
 	// Check if lengths are equal
 	if len(a) != len(b) {
@@ -27,7 +27,7 @@ func Dot[T int | float64, E int | float64](a []T, b []E) (float64, error) {
 	return dot, nil
 }
 
-// Determines whether two vectors are orthogonal, I.E. their dot product is zero,
+// IsOrthogonal Determines whether two vectors are orthogonal, I.E. their dot product is zero,
 // with an error within EPSILON.
 func IsOrthogonal[T int | float64, E int | float64](a []T, b []E) (bool, error) {
 	if a == nil || b == nil {
@@ -38,7 +38,7 @@ func IsOrthogonal[T int | float64, E int | float64](a []T, b []E) (bool, error) 
 	return math.Abs(dot-0) < EPSILON, err
 }
 
-// Computes the cross product of two vectors. A cross product is exclusive to 3-dimensional
+// Cross Computes the cross product of two vectors. A cross product is exclusive to 3-dimensional
 // vectors.
 func Cross[T int | float64, E int | float64](a []T, b []E) ([]float64, error) {
 	// Both vectors must be 3D
@@ -54,7 +54,7 @@ func Cross[T int | float64, E int | float64](a []T, b []E) ([]float64, error) {
 	return res, nil
 }
 
-// Adds two vectors, returning the resulting vector.
+// Add Adds two vectors, returning the resulting vector.
 func Add[T int | float64, E int | float64](a []T, b []E) ([]float64, error) {
 	// Check if lengths are equal
 	if len(a) != len(b) {
@@ -69,7 +69,7 @@ func Add[T int | float64, E int | float64](a []T, b []E) ([]float64, error) {
 	return res, nil
 }
 
-// Multiplies a given vector by a scalar value.
+// ScalarMult Multiplies a given vector by a scalar value.
 func ScalarMult[T int | float64, E int | float64](vec []T, scalar E) ([]float64, error) {
 	if len(vec) < 1 {
 		return nil, errors.New("vector cannot be empty")

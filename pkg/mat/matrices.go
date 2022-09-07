@@ -1,4 +1,4 @@
-// The matrices package provides utility methods for generating matrices and
+// Package linalg matrices module provides utility methods for generating matrices and
 // performing standard linear-algebraic operations on them. All numeric results
 // are returned as 64-bit floats, or  matrices of them, and all successful
 // function calls will return err == nil.
@@ -6,7 +6,7 @@ package linalg
 
 import "errors"
 
-// Produces an identity matrix of a given size.
+// IdMatrix Produces an identity matrix of a given size.
 func IdMatrix(size int) ([][]float64, error) {
 	if size < 1 {
 		return nil, errors.New("matrix cannot have size < 1")
