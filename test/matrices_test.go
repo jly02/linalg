@@ -86,3 +86,21 @@ func TestTransposeSquare(t *testing.T) {
 		t.Fatalf(`Transpose([4][4]) = %f, %v`, mat, err)
 	}
 }
+
+func TestTransposeRectangle(t *testing.T) {
+	input := [][]float64{
+		{0, 0, 1, 1},
+		{0, 0, 0, 1},
+	}
+	mat, err := matrices.Transpose(input)
+
+	want := [][]float64{
+		{0, 0},
+		{0, 0},
+		{1, 0},
+		{1, 1},
+	}
+	if err != nil || !floatMatrixEquals(mat, want) {
+		t.Fatalf(`Transpose([2][4]) = %f, %v`, mat, err)
+	}
+}
