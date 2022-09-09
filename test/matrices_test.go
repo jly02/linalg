@@ -47,3 +47,42 @@ func TestEyeSmall(t *testing.T) {
 		t.Fatalf(`Eye(4) = %f, %v, want %f`, mat, err, want)
 	}
 }
+
+func TestTransposeEmpty(t *testing.T) {
+	input := make([][]float64, 0)
+	mat, err := matrices.Transpose(input)
+
+	if err != nil || len(mat) > 0 {
+		t.Fatalf(`Transpose([[]]) = %f, %v`, mat, err)
+	}
+}
+
+func TestTransposeOne(t *testing.T) {
+	input := [][]float64{{1}}
+	mat, err := matrices.Transpose(input)
+
+	want := [][]float64{{1}}
+	if err != nil || !floatMatrixEquals(mat, want) {
+		t.Fatalf(`Transpose([[1]]) = %f, %v`, mat, err)
+	}
+}
+
+func TestTransposeSquare(t *testing.T) {
+	input := [][]float64{
+		{0, 1, 1, 1},
+		{0, 0, 1, 1},
+		{0, 0, 0, 1},
+		{0, 0, 0, 0},
+	}
+	mat, err := matrices.Transpose(input)
+
+	want := [][]float64{
+		{0, 0, 0, 0},
+		{1, 0, 0, 0},
+		{1, 1, 0, 0},
+		{1, 1, 1, 0},
+	}
+	if err != nil || !floatMatrixEquals(mat, want) {
+		t.Fatalf(`Transpose([4][4]) = %f, %v`, mat, err)
+	}
+}
