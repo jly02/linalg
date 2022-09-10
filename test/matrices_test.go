@@ -87,7 +87,7 @@ func TestTransposeSquare(t *testing.T) {
 	}
 }
 
-func TestTransposeRectangle(t *testing.T) {
+func TestTransposeHorizontalRectangle(t *testing.T) {
 	input := [][]float64{
 		{0, 0, 1, 1},
 		{0, 0, 0, 1},
@@ -102,5 +102,37 @@ func TestTransposeRectangle(t *testing.T) {
 	}
 	if err != nil || !floatMatrixEquals(mat, want) {
 		t.Fatalf(`Transpose([2][4]) = %f, %v`, mat, err)
+	}
+}
+
+func TestTransposeVerticalRectangle(t *testing.T) {
+	input := [][]float64{
+		{0, 0},
+		{0, 0},
+		{1, 0},
+		{1, 1},
+	}
+	mat, err := matrices.Transpose(input)
+
+	want := [][]float64{
+		{0, 0, 1, 1},
+		{0, 0, 0, 1},
+	}
+	if err != nil || !floatMatrixEquals(mat, want) {
+		t.Fatalf(`Transpose([4][2]) = %f, %v`, mat, err)
+	}
+}
+
+func TestTransposeNonRectangle(t *testing.T) {
+	input := [][]float64{
+		{0},
+		{0, 0},
+		{0, 0, 0},
+		{0, 0, 0, 0},
+	}
+	mat, err := matrices.Transpose(input)
+
+	if err == nil {
+		t.Fatalf(`Non-rectangular transpose did not throw error as expected, %f`, mat)
 	}
 }
